@@ -5,10 +5,10 @@ import java.awt.event.KeyEvent;
 public class KeyHandler implements KeyListener {
 
     public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public boolean speedUpPressed, speedDownPressed;
     
     @Override
     public void keyTyped(KeyEvent e) {
-        
     }
 
     @Override
@@ -30,6 +30,14 @@ public class KeyHandler implements KeyListener {
                 rightPressed = true;    
                 System.out.println("D");
             }
+            if(code == KeyEvent.VK_M) {
+                speedUpPressed = true;
+                System.out.println("M - Velocidad +");
+            }
+            if(code == KeyEvent.VK_L) {
+                speedDownPressed = true;
+                System.out.println("L - Velocidad -");
+            }
         
     }
 
@@ -47,6 +55,12 @@ public class KeyHandler implements KeyListener {
         }
         if(code == KeyEvent.VK_D) {
             rightPressed = false;
+        }
+        if(code == KeyEvent.VK_M) {
+            speedUpPressed = false;
+        }
+        if(code == KeyEvent.VK_L) {
+            speedDownPressed = false;
         }
     }
     
