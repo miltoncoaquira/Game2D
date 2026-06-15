@@ -13,32 +13,42 @@ public class TileManager {
     GamePanel gp;
     public Tile[] tile;
     int mapTileNum[][];
+    int z = 35;
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
-        tile = new Tile[10];
+        tile = new Tile[z];
         getTileImage();
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
-        loadMap("/maps/mapWorld01.txt");
+        loadMap("/maps/mapWorld02.txt");
     }
 
     public void getTileImage() {
         try {
             // while().......
-            tile[0] = new Tile();
-            tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass1.png"));
-            tile[1] = new Tile();
-            tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass2.png"));
-            tile[2] = new Tile();
-            tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass3.png"));
-            tile[3] = new Tile();
-            tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/abismo1.png"));
-            tile[4] = new Tile();
-            tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/abismo2.png"));
-            tile[5] = new Tile();
-            tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass5.png"));
-            tile[6] = new Tile();
-            tile[6].image = ImageIO.read(getClass().getResourceAsStream("/tiles/id_1.png"));
+            int cantidadTiles = 35;
+            int i = 0;
+            while( i < cantidadTiles) {
+                tile[i] = new Tile(); 
+                tile[i].image = ImageIO.read( getClass().getResourceAsStream(
+                                String.format("/tiles/tilesWorld_1/id_%02d.png", i)) );
+                i++;
+            }
+                
+            // tile[0] = new Tile();
+            // tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass1.png"));
+            // tile[1] = new Tile();
+            // tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass2.png"));
+            // tile[2] = new Tile();
+            // tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass3.png"));
+            // tile[3] = new Tile();
+            // tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/abismo1.png"));
+            // tile[4] = new Tile();
+            // tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/abismo2.png"));
+            // tile[5] = new Tile();
+            // tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass5.png"));
+            // tile[6] = new Tile();
+            // tile[6].image = ImageIO.read(getClass().getResourceAsStream("/tiles/id_1.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -107,3 +117,7 @@ public class TileManager {
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 */
+
+
+
+

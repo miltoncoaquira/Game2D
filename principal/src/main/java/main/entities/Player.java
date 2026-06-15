@@ -28,10 +28,10 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
-        worldX = gp.tileSize * 5;
-        worldY = gp.tileSize * 5;
+        worldX = gp.tileSize * (gp.maxWorldCol/2-1);
+        worldY = gp.tileSize * (gp.maxWorldRow/2-9);
         speed = 6;
-        direction = "down";
+        direction = "down_m";
     }
     
     public void getPlayerImage() {
@@ -113,7 +113,7 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics2D g2) {
-        BufferedImage image = down_1;
+        BufferedImage image = down_m;
 
         switch (direction) {
             case "up":
