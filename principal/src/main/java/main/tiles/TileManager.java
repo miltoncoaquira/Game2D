@@ -1,31 +1,33 @@
-package main.tile;
+package main.tiles;
 
 import main.game.GamePanel;
-
+import main.input.KeySetting;
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
 import javax.imageio.ImageIO;
 
 public class TileManager {
     GamePanel gp;
     public Tile[] tile;
     int mapTileNum[][];
-    int z = 35;
+    int cantidadTiles = 35;
+    KeySetting keyS;
+    int zoom = 1;
+    private int fpsCounter = 1;
 
-    public TileManager(GamePanel gp) {
+    public TileManager(GamePanel gp, KeySetting keyS) {
         this.gp = gp;
-        tile = new Tile[z];
+        tile = new Tile[cantidadTiles];
         getTileImage();
-        mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
+        mapTileNum = new int[gp.maxWorldRow][gp.maxWorldCol];
         loadMap("/maps/mapWorld02.txt");
+        this.keyS = keyS;
     }
 
     public void getTileImage() {
         try {
-            // while().......
             int cantidadTiles = 35;
             int i = 0;
             while( i < cantidadTiles) {
@@ -34,24 +36,22 @@ public class TileManager {
                                 String.format("/tiles/tilesWorld_1/id_%02d.png", i)) );
                 i++;
             }
-                
-            // tile[0] = new Tile();
-            // tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass1.png"));
-            // tile[1] = new Tile();
-            // tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass2.png"));
-            // tile[2] = new Tile();
-            // tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass3.png"));
-            // tile[3] = new Tile();
-            // tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/abismo1.png"));
-            // tile[4] = new Tile();
-            // tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/abismo2.png"));
-            // tile[5] = new Tile();
-            // tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass5.png"));
-            // tile[6] = new Tile();
-            // tile[6].image = ImageIO.read(getClass().getResourceAsStream("/tiles/id_1.png"));
+            setCollisionTiles();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void setCollisionTiles() {
+        int[] solidTileIds = {1, 2, 3, 4, 5, 8, 9, 10};
+
+        for( int i = 0; i < solidTileIds.length; ++i ) 
+                tile[solidTileIds[i]].collision = true;
+    }
+
+    public boolean isSolidTile(int row, int col) {
+        int tileNum = mapTileNum[row][col];
+        return tileNum >= 0 && tileNum < tile.length && tile[tileNum].collision;
     }
 
     public void loadMap(String mapPath){
@@ -80,6 +80,18 @@ public class TileManager {
     public void draw(Graphics2D g2) {
         int worldCol = 0;
         int worldRow = 0;
+        int X = zoom * gp.tileSize;
+
+        if(fpsCounter > 0){
+            if( keyS.incPressed == true && zoom < 7){
+                zoom++;
+                System.out.println("Zoom -> " + zoom );
+            }
+            if( keyS.decPressed == true && zoom > 1){
+                zoom--;
+                System.out.println("Zoom -> " + zoom );
+            }
+        }
 
         while( worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
             int tileNum = mapTileNum[worldRow][worldCol];
@@ -91,33 +103,19 @@ public class TileManager {
             if( worldX > gp.player.worldX - gp.player.screenX - gp.tileSize &&
                 worldX < gp.player.worldX + gp.player.screenX + 5*gp.tileSize &&
                 worldY > gp.player.worldY - gp.player.screenY - gp.tileSize &&
-                worldY  < gp.player.worldY + gp.player.screenY + 5*gp.tileSize) {
+                worldY < gp.player.worldY + gp.player.screenY + 5*gp.tileSize) {
                 
-                g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(tile[tileNum].image, screenX, screenY, X, X, null);
             }
             worldCol++;
-
+            
             if(worldCol == gp.maxWorldCol) {
                 worldCol = 0;
                 worldRow++;
             }
-            
         }
+        fpsCounter++;
+        if(fpsCounter > 30 )
+            fpsCounter = 0;
     }
 }
-/*8 9 9 9 9 9 9 9 9 9 9 9 9 9 9 10
-7 4 4 4 4 4 4 4 4 4 4 4 4 4 4 11
-7 4 4 4 4 4 4 4 4 4 4 4 4 4 4 11
-7 0 0 0 0 0 0 0 0 0 0 0 0 0 0 11
-7 0 0 0 0 0 0 0 0 0 0 0 0 0 0 11
-7 0 0 0 0 14 14 14 14 14 14 0 0 0 0 11
-7 0 0 0 0 0 0 0 0 0 0 0 0 0 0 11
-7 3 3 3 3 3 3 3 3 3 3 3 3 3 3 11
-13 2 2 2 2 2 2 2 2 2 2 2 2 2 2 12
-1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 */
-
-
-
-

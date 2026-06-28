@@ -4,17 +4,20 @@ import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints.Key;
+
 import main.entities.Player;
 import main.input.KeyHandler;
-import main.tile.TileManager;
+import main.input.KeySetting;
+import main.tiles.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
-    
+
     final int originalTileSize = 16;
     final int scale = 3;
     public final int tileSize = originalTileSize * scale;
-    public final int maxScreenCol = 16;
-    public final int maxScreenRow = 12;
+    public final int maxScreenCol = 20;
+    public final int maxScreenRow = 15;
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
 
@@ -22,18 +25,25 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxWorldRow = 50;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
-    
-    KeyHandler keyH = new KeyHandler();
     Thread gameThread;
-    public Player player = new Player(this, keyH);
-    Player player2 = new Player(this, keyH);
-    TileManager tileM = new TileManager(this);
+
+    KeyHandler keyH_1 = new KeyHandler("WASD");
+    public Player player = new Player(this, keyH_1, "Default_Player");
+    // public Player player = new Player(this, keyH_1, "Player_2");
+    // KeyHandler keyH_2 = new KeyHandler("IJKL");
+    // public Player player2 = new Player(this, keyH_2, "Player_2");
+    KeySetting keyS = new KeySetting("90");
+
+    public TileManager tileM = new TileManager(this, keyS);
+    public CollisionChecker cChecker = new CollisionChecker(this);
     
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
-        this.addKeyListener(keyH);
+        this.addKeyListener(keyH_1);
+        // this.addKeyListener(keyH_2);
+        this.addKeyListener(keyS);
         this.setFocusable(true);
         this.requestFocusInWindow();
     }
@@ -48,8 +58,6 @@ public class GamePanel extends JPanel implements Runnable {
     public void run() {
         double drawInterval = 1000000000/FPS;
         double nextDrawTime = System.nanoTime() + drawInterval;
-        player.update();
-        repaint();
         while(gameThread != null) {
             double currentTime = System.nanoTime();
             if(currentTime >= nextDrawTime) {
@@ -71,7 +79,10 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         tileM.draw(g2);
+        // player.drawTest(g2);
         player.draw(g2);    
+        // player2.draw(g2);
+
         g2.dispose();
     }
 }

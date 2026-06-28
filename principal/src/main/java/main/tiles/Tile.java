@@ -1,8 +1,8 @@
-package main.tile;
+package main.tiles;
 
 import java.awt.image.BufferedImage;
 
 public class Tile {
     public BufferedImage image;
-    private boolean collision = false;
+    public boolean collision = false;
 }
