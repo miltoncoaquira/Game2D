@@ -1,0 +1,4 @@
+/principal/target/
+/.idea/
+/game_data/leaderboard.db
+/principal/game_data/leaderboard.db

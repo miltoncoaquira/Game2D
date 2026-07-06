@@ -7,6 +7,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import javax.imageio.ImageIO;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TileManager {
     GamePanel gp;
@@ -16,6 +18,7 @@ public class TileManager {
     KeySetting keyS;
     int zoom = 1;
     private int fpsCounter = 1;
+    public List<int[]> spawnPoints = new ArrayList<>();
 
     public TileManager(GamePanel gp, KeySetting keyS) {
         this.gp = gp;
@@ -97,8 +100,8 @@ public class TileManager {
             int tileNum = mapTileNum[worldRow][worldCol];
             int worldX = worldCol * gp.tileSize;
             int worldY = worldRow * gp.tileSize;
-            int screenX = worldX - gp.player.worldX + gp.player.screenX;
-            int screenY = worldY - gp.player.worldY + gp.player.screenY;
+            int screenX = (int) (worldX - gp.player.worldX + gp.player.screenX);
+            int screenY = (int) (worldY - gp.player.worldY + gp.player.screenY);
 
             if( worldX > gp.player.worldX - gp.player.screenX - gp.tileSize &&
                 worldX < gp.player.worldX + gp.player.screenX + 5*gp.tileSize &&
@@ -117,5 +120,39 @@ public class TileManager {
         fpsCounter++;
         if(fpsCounter > 30 )
             fpsCounter = 0;
+    }
+
+    public void loadSpawnMap(String mapPath) {
+        try {
+            InputStream is = getClass().getResourceAsStream(mapPath);
+            if (is == null) {
+                System.out.println("No se encontro mapa de spawn en " + mapPath);
+                return;
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            int col = 0;
+            int row = 0;
+
+            while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
+                String line = br.readLine();
+                if (line == null) break;
+
+                String numbers[] = line.split(" ");
+                while(col < gp.maxWorldCol && col < numbers.length) {
+                    int num = Integer.parseInt(numbers[col]);
+                    
+                    if (num == 1) {
+                        spawnPoints.add(new int[]{col, row});
+                    }
+                    col++;
+                }
+                col = 0;
+                row++;
+            }
+            br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

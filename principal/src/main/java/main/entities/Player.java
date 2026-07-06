@@ -19,6 +19,13 @@ public class Player extends Entity {
     public final int screenY ;
     private String playerSprites;
 
+    public int points = 0;
+    public int health = 1;
+    public boolean alive = true;
+
+    private double animationTimer = 0;
+    private double animationSpeed = 0.1;
+
     public Player(GamePanel gp, KeyHandler keyH, String playerSprites) {
         this.gp = gp;
         this.keyH = keyH;
@@ -33,7 +40,7 @@ public class Player extends Entity {
     public void setDefaultValues() {
         worldX = gp.tileSize * (gp.maxWorldCol/2 -1);
         worldY = gp.tileSize * (gp.maxWorldRow/2 -9);
-        speed = 6;
+        speed = 300; //pixeles por segundo
         direction = "down_m";
         solidArea = new Rectangle(24, 48, 36, 36);
     }
@@ -62,64 +69,74 @@ public class Player extends Entity {
     }
 
 
-    public void update() {
-        
+    public void update(double deltaTime) {
+        if (!alive) {
+            return;
+        }
+
         if(keyH.speedUpPressed == true) {
-            if(speed < 20) {
-                speed += 1;
+            if(speed < 401) {
+                speed += 25;
                 System.out.println("Velocidad: " + speed);
             }
             keyH.speedUpPressed = false;
         }
         
         if(keyH.speedDownPressed == true) {
-            if(speed > 1) {
-                speed -= 1;
+            if(speed > 99) {
+                speed -= 25;
                 System.out.println("Velocidad: " + speed);
             }
             keyH.speedDownPressed = false;
         }
 
         if(keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) {
-            int nextWorldX = worldX;
-            int nextWorldY = worldY;
+            double nextWorldX = worldX;
+            double nextWorldY = worldY;
+
+            double distance = speed * deltaTime;
 
             if(keyH.upPressed == true) {
                 direction = "up";
-                nextWorldY -= speed;
+                nextWorldY -= distance;
             }
             else if(keyH.downPressed == true) {
                 direction = "down";
-                nextWorldY += speed;
+                nextWorldY += distance;
             }
             else if(keyH.leftPressed == true) {
                 direction = "left";
-                nextWorldX -= speed;
+                nextWorldX -= distance;
             }
             else if(keyH.rightPressed == true) {
                 direction = "right";
-                nextWorldX += speed;
+                nextWorldX += distance;
             }
 
-            if(gp.cChecker.checkTile(this, nextWorldX, nextWorldY) == false) {
+            if(gp.cChecker.checkTile(this, (int)nextWorldX, (int)nextWorldY) == false) {
                 worldX = nextWorldX;
                 worldY = nextWorldY;
             }
 
-            spriteCounter++;
-            if(spriteCounter > 12 ) {
-                if(spriteNum == 1) {
-                    spriteNum = 2;
-                } else if(spriteNum == 2) {
-                    spriteNum = 3;
-                } else if(spriteNum == 3) {
-                    spriteNum = 4;
-                } else {
+            animationTimer += deltaTime;
+            if (animationTimer >= animationSpeed) {
+                animationTimer = 0;
+                spriteNum++;
+                if (spriteNum > 4) {
                     spriteNum = 1;
                 }
-
-                spriteCounter = 0;
             }
+        }
+    }
+
+    public void addPoints(int value) { //Interaccion con items
+        points += value;
+    }
+
+    public void takeDamage() { //Interaccion con enemigos
+        health--;
+        if (health <= 0) {
+            alive = false;
         }
     }
 

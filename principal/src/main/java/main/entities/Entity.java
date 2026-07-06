@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 
 public class Entity {
     
-    public int worldX, worldY;
-    public int speed;
+    public double worldX, worldY;
+    public double speed;
     
     public BufferedImage up_1, up_m, up_2, down_1, down_m, down_2, left_1,
     left_m, left_2, right_1, right_m, right_2, test, test_1, test_2;
