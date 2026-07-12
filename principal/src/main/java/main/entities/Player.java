@@ -15,6 +15,8 @@ public class Player extends Entity {
     private GamePanel gp;
     private KeyHandler keyH;
     private int scalePlayer = 2;
+    private int coinCount;
+    private boolean hasSword;
     public final int screenX ;
     public final int screenY ;
     private String playerSprites;
@@ -101,9 +103,17 @@ public class Player extends Entity {
                 nextWorldX += speed;
             }
 
-            if(gp.cChecker.checkTile(this, nextWorldX, nextWorldY) == false) {
+            boolean collidesWithTile = gp.cChecker.checkTile(this, nextWorldX, nextWorldY);
+            int objectIndex = gp.cChecker.checkObject(this, nextWorldX, nextWorldY);
+            boolean collidesWithObject = objectIndex != -1 && gp.objM.objects[objectIndex].collision;
+
+            if(collidesWithTile == false && collidesWithObject == false) {
                 worldX = nextWorldX;
                 worldY = nextWorldY;
+            }
+
+            if(objectIndex != -1) {
+                gp.objM.handleContact(objectIndex, this);
             }
 
             spriteCounter++;
@@ -121,6 +131,21 @@ public class Player extends Entity {
                 spriteCounter = 0;
             }
         }
+    }
+
+    public void addCoin(int amount) {
+        coinCount += amount;
+        System.out.println("Monedas: " + coinCount);
+    }
+
+    public void equipSword() {
+        hasSword = true;
+        System.out.println("Conseguiste la espada.");
+    }
+
+    public void addSpeed(int amount) {
+        speed = Math.min(20, speed + amount);
+        System.out.println("Velocidad: " + speed);
     }
 
     public void draw(Graphics2D g2) {

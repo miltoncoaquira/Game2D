@@ -17,13 +17,13 @@ public class TileManager {
     int zoom = 1;
     private int fpsCounter = 1;
 
-    public TileManager(GamePanel gp, KeySetting keyS) {
+    public TileManager(GamePanel gp, KeySetting keyS, String mapPath) {
         this.gp = gp;
+        this.keyS = keyS;
         tile = new Tile[cantidadTiles];
         getTileImage();
         mapTileNum = new int[gp.maxWorldRow][gp.maxWorldCol];
-        loadMap("/maps/mapWorld02.txt");
-        this.keyS = keyS;
+        loadMap(mapPath);
     }
 
     public void getTileImage() {
