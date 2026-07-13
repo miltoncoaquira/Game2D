@@ -6,7 +6,7 @@ import main.util.ResourceLoader;
 
 public class Key extends GameObject {
     private static final String IMAGE_PATH = "/objects/key.png";
-    private static final String SOUND_PATH = "/audio/sfx/null.wav";
+    private static final String SOUND_PATH = "/audio/sfx/key.wav";
 
     public Key() {
         name = "Key";

@@ -6,7 +6,7 @@ import main.util.ResourceLoader;
 
 public class Potion extends GameObject {
     private static final String IMAGE_PATH = "/objects/potion.png";
-    private static final String SOUND_PATH = "/audio/sfx/null.wav";
+    private static final String SOUND_PATH = "/audio/sfx/potion.wav";
 
     public Potion() {
         name = "Potion";

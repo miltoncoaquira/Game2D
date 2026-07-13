@@ -7,7 +7,7 @@ import main.util.ResourceLoader;
 public class Door extends GameObject {
     private static final String CLOSED_IMAGE_PATH = "/objects/door_close.png";
     private static final String OPEN_IMAGE_PATH = "/objects/door_open.png";
-    private static final String SOUND_PATH = "/audio/sfx/null.wav";
+    private static final String SOUND_PATH = "/audio/sfx/door.wav";
     private static final long LOCKED_MESSAGE_COOLDOWN_NANOS = 750_000_000L;
 
     private long lastLockedMessageTime;

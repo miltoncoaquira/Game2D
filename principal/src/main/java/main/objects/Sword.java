@@ -6,7 +6,7 @@ import main.util.ResourceLoader;
 
 public class Sword extends GameObject {
     private static final String IMAGE_PATH = "/objects/sword.png";
-    private static final String SOUND_PATH = "/audio/sfx/null.wav";
+    private static final String SOUND_PATH = "/audio/sfx/sword.wav";
 
     public Sword() {
         name = "Sword";

@@ -6,7 +6,7 @@ import main.util.ResourceLoader;
 
 public class Coin extends GameObject {
     private static final String IMAGE_PATH = "/objects/coin.png";
-    private static final String SOUND_PATH = "/audio/sfx/null.wav";
+    private static final String SOUND_PATH = "/audio/sfx/coin.wav";
 
     public Coin() {
         name = "Coin";

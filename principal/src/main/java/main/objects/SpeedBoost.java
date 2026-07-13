@@ -6,7 +6,7 @@ import main.util.ResourceLoader;
 
 public class SpeedBoost extends GameObject {
     private static final String IMAGE_PATH = "/objects/speed_boost.png";
-    private static final String SOUND_PATH = "/audio/sfx/null.wav";
+    private static final String SOUND_PATH = "/audio/sfx/speed.wav";
 
     public SpeedBoost() {
         name = "SpeedBoost";

@@ -6,7 +6,7 @@ import main.util.ResourceLoader;
 
 public class SuperKey extends GameObject {
     private static final String IMAGE_PATH = "/objects/super_key.png";
-    private static final String SOUND_PATH = "/audio/sfx/null.wav";
+    private static final String SOUND_PATH = "/audio/sfx/superkey.wav";
 
     public SuperKey() {
         name = "SuperKey";

@@ -6,7 +6,7 @@ import main.util.ResourceLoader;
 
 public class Bow extends GameObject {
     private static final String IMAGE_PATH = "/objects/bow.png";
-    private static final String SOUND_PATH = "/audio/sfx/null.wav";
+    private static final String SOUND_PATH = "/audio/sfx/bow.wav";
 
     public Bow() {
         name = "Bow";

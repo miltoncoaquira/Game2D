@@ -7,6 +7,11 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public class Player extends Entity {
+    public static final int MAX_LIVES = 5;
+    public static final String WEAPON_NONE = "Sin arma";
+    public static final String WEAPON_SWORD = "Espada";
+    public static final String WEAPON_BOW = "Arco";
+    public static final String WEAPON_AXE = "Hacha";
     private static final String STEP_SOUND_PATH = "/audio/sfx/null.wav";
     private static final long STEP_SOUND_COOLDOWN_NANOS = 180_000_000L;
     
@@ -16,9 +21,14 @@ public class Player extends Entity {
     private int coinCount;
     private int keyCount;
     private int superKeyCount;
+    private int lives = MAX_LIVES;
     private boolean hasAxe;
     private boolean hasBow;
     private boolean hasSword;
+    private String currentWeapon = WEAPON_NONE;
+    private BufferedImage axeImage;
+    private BufferedImage bowImage;
+    private BufferedImage swordImage;
     private long lastStepSoundTime;
     public final int screenX ;
     public final int screenY ;
@@ -33,6 +43,7 @@ public class Player extends Entity {
 
         setDefaultValues();
         loadPlayerImages();
+        loadWeaponImages();
     }
 
     public void setDefaultValues() {
@@ -61,6 +72,30 @@ public class Player extends Entity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void loadWeaponImages() {
+        try {
+            axeImage = ResourceLoader.loadImage("/objects/axe.png");
+            bowImage = ResourceLoader.loadImage("/objects/bow.png");
+            swordImage = ResourceLoader.loadImage("/objects/sword.png");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setPlayerSprites(String playerSprites) {
+        if(this.playerSprites.equals(playerSprites)) {
+            return;
+        }
+
+        this.playerSprites = playerSprites;
+        loadPlayerImages();
+        System.out.println("Personaje seleccionado: " + playerSprites);
+    }
+
+    public String getPlayerSprites() {
+        return playerSprites;
     }
 
 
@@ -191,18 +226,68 @@ public class Player extends Entity {
         return true;
     }
 
+    public int getLives() {
+        return lives;
+    }
+
+    public void loseLife() {
+        if(lives <= 0) {
+            return;
+        }
+
+        lives--;
+        System.out.println("Vidas: " + lives);
+    }
+
+    public String getCurrentWeapon() {
+        return currentWeapon;
+    }
+
+    public BufferedImage getCurrentWeaponImage() {
+        return switch (currentWeapon) {
+            case WEAPON_SWORD -> swordImage;
+            case WEAPON_BOW -> bowImage;
+            case WEAPON_AXE -> axeImage;
+            default -> null;
+        };
+    }
+
+    public boolean isWeaponUnlocked(String weapon) {
+        return switch (weapon) {
+            case WEAPON_NONE -> true;
+            case WEAPON_SWORD -> hasSword;
+            case WEAPON_BOW -> hasBow;
+            case WEAPON_AXE -> hasAxe;
+            default -> false;
+        };
+    }
+
+    public boolean selectWeapon(String weapon) {
+        if(isWeaponUnlocked(weapon) == false) {
+            System.out.println("Aun no tienes el arma: " + weapon);
+            return false;
+        }
+
+        currentWeapon = weapon;
+        System.out.println("Arma actual: " + currentWeapon);
+        return true;
+    }
+
     public void equipSword() {
         hasSword = true;
+        currentWeapon = WEAPON_SWORD;
         System.out.println("Conseguiste la espada.");
     }
 
     public void equipBow() {
         hasBow = true;
+        currentWeapon = WEAPON_BOW;
         System.out.println("Conseguiste el arco.");
     }
 
     public void equipAxe() {
         hasAxe = true;
+        currentWeapon = WEAPON_AXE;
         System.out.println("Conseguiste el hacha.");
     }
 

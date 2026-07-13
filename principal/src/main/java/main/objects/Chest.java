@@ -7,7 +7,7 @@ import main.util.ResourceLoader;
 public class Chest extends GameObject {
     private static final String CLOSED_IMAGE_PATH = "/objects/chest_closed.png";
     private static final String OPEN_IMAGE_PATH = "/objects/chest_open.png";
-    private static final String SOUND_PATH = "/audio/sfx/null.wav";
+    private static final String SOUND_PATH = "/audio/sfx/chest.wav";
     private static final long LOCKED_MESSAGE_COOLDOWN_NANOS = 750_000_000L;
 
     private long lastLockedMessageTime;
