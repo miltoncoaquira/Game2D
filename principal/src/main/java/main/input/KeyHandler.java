@@ -1,12 +1,12 @@
 package main.input;
 import java.awt.event.KeyListener;
-import java.security.PublicKey;
 import java.awt.event.KeyEvent;
 
 public class KeyHandler implements KeyListener {
 
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     public boolean speedUpPressed, speedDownPressed;
+    public boolean restartPressed;
     private int up;
     private int left;
     private int down;
@@ -53,6 +53,10 @@ public class KeyHandler implements KeyListener {
                 speedDownPressed = true;
                 System.out.println("L - Velocidad -");
             }
+            if(code == KeyEvent.VK_R) {
+                restartPressed = true;
+                System.out.println("R - Reiniciar juego");
+            }
     
     }
 
@@ -79,6 +83,19 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_L) {
             speedDownPressed = false;
         }
+        if(code == KeyEvent.VK_R) {
+            restartPressed = false;
+        }
+    }
+
+    public void resetInputState() {
+        upPressed = false;
+        downPressed = false;
+        leftPressed = false;
+        rightPressed = false;
+        speedUpPressed = false;
+        speedDownPressed = false;
+        restartPressed = false;
     }
     
 }

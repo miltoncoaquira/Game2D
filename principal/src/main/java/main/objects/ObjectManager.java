@@ -2,6 +2,7 @@ package main.objects;
 
 import main.game.GamePanel;
 import main.entities.Player;
+import main.util.ResourceLoader;
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -17,15 +18,8 @@ public class ObjectManager {
     }
 
     public void loadObjects(String objectsPath) {
-        try {
-            InputStream is = getClass().getResourceAsStream(objectsPath);
-
-            if(is == null) {
-                System.out.println("No se encontro el archivo de objetos: " + objectsPath);
-                return;
-            }
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        try (InputStream is = ResourceLoader.openStream(objectsPath);
+             BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
             String line;
             int index = 0;
 
@@ -52,8 +46,6 @@ public class ObjectManager {
                 objects[index] = object;
                 index++;
             }
-
-            br.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,8 +53,14 @@ public class ObjectManager {
 
     private GameObject createObject(String objectId) {
         return switch (objectId.toUpperCase()) {
+            case "AXE" -> new Axe();
+            case "BOW" -> new Bow();
+            case "CHEST" -> new Chest();
             case "COIN" -> new Coin();
             case "DOOR" -> new Door();
+            case "KEY" -> new Key();
+            case "SUPERKEY" -> new SuperKey();
+            case "POTION" -> new Potion();
             case "SWORD" -> new Sword();
             case "SPEED" -> new SpeedBoost();
             default -> null;
@@ -97,7 +95,8 @@ public class ObjectManager {
                object.worldY > gp.player.worldY - gp.player.screenY - gp.tileSize &&
                object.worldY < gp.player.worldY + gp.player.screenY + 5 * gp.tileSize) {
 
-                g2.drawImage(object.image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                int renderSize = gp.tileSize * object.renderScale;
+                g2.drawImage(object.image, screenX, screenY, renderSize, renderSize, null);
             }
         }
     }

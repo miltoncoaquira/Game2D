@@ -2,13 +2,15 @@ package main.tiles;
 
 import main.game.GamePanel;
 import main.input.KeySetting;
+import main.util.ResourceLoader;
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import javax.imageio.ImageIO;
 
 public class TileManager {
+    private static final String TILESET_PATH_FORMAT = "/tiles/world_1/id_%02d.png";
+
     GamePanel gp;
     public Tile[] tile;
     int mapTileNum[][];
@@ -32,8 +34,7 @@ public class TileManager {
             int i = 0;
             while( i < cantidadTiles) {
                 tile[i] = new Tile(); 
-                tile[i].image = ImageIO.read( getClass().getResourceAsStream(
-                                String.format("/tiles/tilesWorld_1/id_%02d.png", i)) );
+                tile[i].image = ResourceLoader.loadImage(String.format(TILESET_PATH_FORMAT, i));
                 i++;
             }
             setCollisionTiles();
@@ -55,9 +56,8 @@ public class TileManager {
     }
 
     public void loadMap(String mapPath){
-        try {
-            InputStream is = getClass().getResourceAsStream(mapPath);
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        try (InputStream is = ResourceLoader.openStream(mapPath);
+             BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
             int col = 0;
             int row = 0;
             while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
@@ -71,7 +71,6 @@ public class TileManager {
                 col = 0;
                 row++;
             }
-            br.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

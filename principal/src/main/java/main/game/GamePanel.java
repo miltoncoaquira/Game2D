@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import main.audio.AudioManager;
 import main.entities.Player;
 import main.input.KeyHandler;
 import main.input.KeySetting;
@@ -25,8 +26,9 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxWorldRow = 50;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
-    public final String worldMapPath = "/maps/mapWorld02.txt";
-    public final String objectMapPath = "/maps/mapWorld02_objects.txt";
+    public final String worldMapPath = "/maps/world/mapWorld02.txt";
+    public final String objectMapPath = "/maps/objects/mapObjects.txt";
+    public final String backgroundMusicPath = "/audio/music/null.wav";
     Thread gameThread;
 
     KeyHandler keyH_1 = new KeyHandler("WASD");
@@ -39,6 +41,7 @@ public class GamePanel extends JPanel implements Runnable {
     public TileManager tileM = new TileManager(this, keyS, worldMapPath);
     public CollisionChecker cChecker = new CollisionChecker(this);
     public ObjectManager objM = new ObjectManager(this, objectMapPath);
+    public final AudioManager audio = new AudioManager();
     
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -52,6 +55,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void startGameThread() {
+        audio.playMusic(backgroundMusicPath, true);
         gameThread = new Thread(this);
         gameThread.start();
     }
@@ -64,6 +68,9 @@ public class GamePanel extends JPanel implements Runnable {
         while(gameThread != null) {
             double currentTime = System.nanoTime();
             if(currentTime >= nextDrawTime) {
+                if(keyH_1.restartPressed) {
+                    resetGame();
+                }
                 player.update();
                 repaint();
                 nextDrawTime += drawInterval;
@@ -77,13 +84,20 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    public void resetGame() {
+        keyH_1.resetInputState();
+        player = new Player(this, keyH_1, "Default_Player");
+        objM = new ObjectManager(this, objectMapPath);
+        audio.playMusic(backgroundMusicPath, true);
+        System.out.println("Juego reiniciado.");
+    }
+
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         tileM.draw(g2);
         objM.draw(g2);
-        // player.drawTest(g2);
         player.draw(g2);    
         // player2.draw(g2);
 

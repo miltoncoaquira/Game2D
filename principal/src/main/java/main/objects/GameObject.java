@@ -13,7 +13,14 @@ public class GameObject {
     public boolean collision = false;
     public boolean consumable = false;
     public boolean active = true;
+    public int renderScale = 1;
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+
+    public void setRenderScale(int renderScale) {
+        this.renderScale = renderScale;
+        int size = 48 * renderScale;
+        solidArea = new Rectangle(0, 0, size, size);
+    }
 
     public void onContact(Player player, GamePanel gp) {
     }

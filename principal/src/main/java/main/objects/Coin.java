@@ -1,19 +1,19 @@
 package main.objects;
 
-import javax.imageio.ImageIO;
-
 import main.entities.Player;
 import main.game.GamePanel;
+import main.util.ResourceLoader;
 
 public class Coin extends GameObject {
+    private static final String IMAGE_PATH = "/objects/coin.png";
+    private static final String SOUND_PATH = "/audio/sfx/null.wav";
 
     public Coin() {
         name = "Coin";
         consumable = true;
 
         try {
-            // Reuses an existing sprite as a placeholder until dedicated object art is added.
-            image = ImageIO.read(getClass().getResourceAsStream("/tiles/tilesWorld_1/id_26.png"));
+            image = ResourceLoader.loadImage(IMAGE_PATH);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -27,6 +27,7 @@ public class Coin extends GameObject {
 
         active = false;
         player.addCoin(1);
+        gp.audio.playEffect(SOUND_PATH);
         System.out.println("Recogiste una moneda.");
     }
 }
