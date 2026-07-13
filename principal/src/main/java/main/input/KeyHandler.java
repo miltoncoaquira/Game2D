@@ -7,6 +7,9 @@ public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     public boolean speedUpPressed, speedDownPressed;
     public boolean restartPressed;
+    public boolean spawnEnemiesPressed;
+    public boolean swordAttackPressed;
+    public boolean reduceEnemyOneLifePressed;
     public boolean characterMenuPressed;
     public boolean menuUpPressed, menuDownPressed, menuLeftPressed, menuRightPressed;
     public boolean menuConfirmPressed, menuCancelPressed;
@@ -17,6 +20,9 @@ public class KeyHandler implements KeyListener {
     private int right;
     private String keys;
     private boolean characterMenuKeyDown;
+    private boolean spawnEnemiesKeyDown;
+    private boolean swordAttackKeyDown;
+    private boolean reduceEnemyOneLifeKeyDown;
     private boolean menuUpKeyDown, menuDownKeyDown, menuLeftKeyDown, menuRightKeyDown;
     private boolean menuConfirmKeyDown, menuCancelKeyDown;
     private boolean menuVolumeDownKeyDown, menuVolumeUpKeyDown;
@@ -64,6 +70,19 @@ public class KeyHandler implements KeyListener {
             if(code == KeyEvent.VK_R) {
                 restartPressed = true;
                 System.out.println("R - Reiniciar juego");
+            }
+            if(code == KeyEvent.VK_G && spawnEnemiesKeyDown == false) {
+                spawnEnemiesPressed = true;
+                spawnEnemiesKeyDown = true;
+                System.out.println("G - Aparecer enemigos");
+            }
+            if(code == KeyEvent.VK_SPACE && swordAttackKeyDown == false) {
+                swordAttackPressed = true;
+                swordAttackKeyDown = true;
+            }
+            if(code == KeyEvent.VK_Z && reduceEnemyOneLifeKeyDown == false) {
+                reduceEnemyOneLifePressed = true;
+                reduceEnemyOneLifeKeyDown = true;
             }
             if(code == KeyEvent.VK_ENTER && characterMenuKeyDown == false) {
                 characterMenuPressed = true;
@@ -130,6 +149,15 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_R) {
             restartPressed = false;
         }
+        if(code == KeyEvent.VK_G) {
+            spawnEnemiesKeyDown = false;
+        }
+        if(code == KeyEvent.VK_SPACE) {
+            swordAttackKeyDown = false;
+        }
+        if(code == KeyEvent.VK_Z) {
+            reduceEnemyOneLifeKeyDown = false;
+        }
         if(code == KeyEvent.VK_ENTER) {
             characterMenuKeyDown = false;
         }
@@ -167,6 +195,9 @@ public class KeyHandler implements KeyListener {
         speedUpPressed = false;
         speedDownPressed = false;
         restartPressed = false;
+        spawnEnemiesPressed = false;
+        swordAttackPressed = false;
+        reduceEnemyOneLifePressed = false;
         characterMenuPressed = false;
         menuUpPressed = false;
         menuDownPressed = false;
@@ -177,6 +208,9 @@ public class KeyHandler implements KeyListener {
         menuVolumeDownPressed = false;
         menuVolumeUpPressed = false;
         characterMenuKeyDown = false;
+        spawnEnemiesKeyDown = false;
+        swordAttackKeyDown = false;
+        reduceEnemyOneLifeKeyDown = false;
         menuUpKeyDown = false;
         menuDownKeyDown = false;
         menuLeftKeyDown = false;
@@ -185,6 +219,10 @@ public class KeyHandler implements KeyListener {
         menuCancelKeyDown = false;
         menuVolumeDownKeyDown = false;
         menuVolumeUpKeyDown = false;
+    }
+
+    public boolean isMovementPressed() {
+        return upPressed || downPressed || leftPressed || rightPressed;
     }
     
 }

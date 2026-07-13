@@ -35,7 +35,7 @@ public class Door extends GameObject {
             long currentTime = System.nanoTime();
 
             if(currentTime - lastLockedMessageTime >= LOCKED_MESSAGE_COOLDOWN_NANOS) {
-                System.out.println("Necesitas una llave para abrir la puerta.");
+                gp.showInteractionMessage("Necesitas una llave");
                 lastLockedMessageTime = currentTime;
             }
             return;

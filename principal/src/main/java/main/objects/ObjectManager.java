@@ -81,6 +81,22 @@ public class ObjectManager {
         }
     }
 
+    public boolean addObject(GameObject object, int worldX, int worldY) {
+        for(int index = 0; index < objects.length; index++) {
+            if(objects[index] != null) {
+                continue;
+            }
+
+            object.worldX = worldX;
+            object.worldY = worldY;
+            objects[index] = object;
+            return true;
+        }
+
+        System.out.println("No hay espacio para soltar el objeto: " + object.name);
+        return false;
+    }
+
     public void draw(Graphics2D g2) {
         for(GameObject object : objects) {
             if(object == null || object.active == false || object.image == null) {

@@ -10,11 +10,12 @@ import java.io.InputStreamReader;
 
 public class TileManager {
     private static final String TILESET_PATH_FORMAT = "/tiles/world_1/id_%02d.png";
+    private static final int TILE_COUNT = 37;
 
     GamePanel gp;
     public Tile[] tile;
     int mapTileNum[][];
-    int cantidadTiles = 35;
+    int cantidadTiles = TILE_COUNT;
     KeySetting keyS;
     int zoom = 1;
     private int fpsCounter = 1;
@@ -30,9 +31,8 @@ public class TileManager {
 
     public void getTileImage() {
         try {
-            int cantidadTiles = 35;
             int i = 0;
-            while( i < cantidadTiles) {
+            while(i < TILE_COUNT) {
                 tile[i] = new Tile(); 
                 tile[i].image = ResourceLoader.loadImage(String.format(TILESET_PATH_FORMAT, i));
                 i++;
@@ -44,7 +44,7 @@ public class TileManager {
     }
 
     private void setCollisionTiles() {
-        int[] solidTileIds = {1, 2, 3, 4, 5, 8, 9, 10};
+        int[] solidTileIds = {1, 2, 3, 4, 5, 8, 9, 10, 35, 36};
 
         for( int i = 0; i < solidTileIds.length; ++i ) 
                 tile[solidTileIds[i]].collision = true;

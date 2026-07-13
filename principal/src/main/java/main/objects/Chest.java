@@ -35,7 +35,7 @@ public class Chest extends GameObject {
             long currentTime = System.nanoTime();
 
             if(currentTime - lastLockedMessageTime >= LOCKED_MESSAGE_COOLDOWN_NANOS) {
-                System.out.println("Necesitas una SuperKey para abrir el cofre.");
+                gp.showInteractionMessage("Necesitas una llave maestra");
                 lastLockedMessageTime = currentTime;
             }
             return;
@@ -43,6 +43,7 @@ public class Chest extends GameObject {
 
         collision = false;
         gp.audio.playEffect(SOUND_PATH);
+        gp.showCongratulations();
         player.addCoin(3);
 
         try {

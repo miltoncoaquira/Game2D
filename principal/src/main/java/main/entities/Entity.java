@@ -8,8 +8,7 @@ public class Entity {
     public int worldX, worldY;
     public int speed;
     
-    public BufferedImage up_1, up_m, up_2, down_1, down_m, down_2, left_1,
-    left_m, left_2, right_1, right_m, right_2;
+    public BufferedImage[] sprites = new BufferedImage[16];
     public String direction;
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
 

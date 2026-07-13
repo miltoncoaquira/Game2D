@@ -25,9 +25,13 @@ public class Potion extends GameObject {
             return;
         }
 
+        if(player.restoreLife(Player.MAX_LIVES) == false) {
+            System.out.println("Ya tienes todas las vidas.");
+            return;
+        }
+
         active = false;
-        player.addSpeed(2);
         gp.audio.playEffect(SOUND_PATH);
-        System.out.println("Tomaste una pocion. Tu velocidad aumento un poco.");
+        System.out.println("Tomaste una pocion y recuperaste toda la vida.");
     }
 }
